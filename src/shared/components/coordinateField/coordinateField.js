@@ -8,20 +8,16 @@ class CoordinateField extends HTMLElement {
   }
 
   connectedCallback() {
-
-    console.log('connectedCallback', this)
     var height = 500, 
         width = 2000, 
         margin = 30;    
         
-    var createNewCoordinate = this.createNewCoordinate
-        
+    var createNewCoordinate = this.createNewCoordinate        
     var svg = d3.select(`div#${this.getAttribute('_id')}`).append("svg")
             .attr("class", "axis")
             .attr("width", width)
             .attr("height", height)
             .call(d3.zoom().on("zoom", function () {
-                console.log(this)
                 let k = d3.zoomTransform(this).k
                 svg.select('.x-axis').remove()
                 svg.select('.y-axis').remove()
@@ -85,8 +81,6 @@ class CoordinateField extends HTMLElement {
   }
 
   disconnectedCallback() {
-    // браузер вызывает этот метод при удалении элемента из документа
-    // (может вызываться много раз, если элемент многократно добавляется/удаляется)
   }
 
   static get observedAttributes() {
@@ -94,20 +88,14 @@ class CoordinateField extends HTMLElement {
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
-    // вызывается при изменении одного из перечисленных выше атрибутов
   }
 
   adoptedCallback() {
-    // вызывается, когда элемент перемещается в новый документ
-    // (происходит в document.adoptNode, используется очень редко)
   }
-
-  // у элемента могут быть ещё другие методы и свойства
 
   createNewCoordinate(k, height, width, d3, margin, svg){
     let height1 = height 
     let width1 = width 
-    console.log(height1, width1)
 
     let xAxisLength = width1 - 2 * margin;
     let yAxisLength = height1 - 2 * margin;
@@ -152,7 +140,14 @@ class CoordinateField extends HTMLElement {
         .attr("x1", 0)
         .attr("y1", 0)
         .attr("x2", xAxisLength)
-        .attr("y2", 0);
+        .attr("y2", 0); 
+
+    var list= document.getElementsByClassName('inWorkPlace');
+    [].forEach.call(list, function(el) {
+        let scale = `scale(${k})`
+        el.childNodes[0].setAttribute('transform', scale)
+        el.childNodes[0].childNodes[0].setAttribute('transform', scale)
+    });
   }
 }
 

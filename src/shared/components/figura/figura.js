@@ -3,7 +3,6 @@ class MyFigura extends HTMLElement {
     super();
 
     setTimeout(()=>{
-        console.log(`${this.getAttribute('_id')}`)
         var figura = document.getElementById(`${this.getAttribute('_id')}`);
         figura.onmousedown = function(e) {
             var coords = getCoords(figura);
@@ -32,8 +31,13 @@ class MyFigura extends HTMLElement {
                 let left = figura.style.left.split('px')[0]
                 let top = figura.style.top.split('px')[0]
 
-                console.log(left) 
-                console.log(top) 
+                let zoonTop = document.getElementsByClassName('y-axis')[0].getBoundingClientRect().top
+
+                if (zoonTop < top){
+                  figura.classList.add('inWorkPlace')
+                } else {
+                  figura.classList.remove('inWorkPlace')
+                }
             };
         }
         figura.ondragstart = function() {
@@ -52,19 +56,26 @@ class MyFigura extends HTMLElement {
   }
 
   connectedCallback() {
-
-    console.log('connectedCallback', this)
-
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.setAttribute("width", this.getAttribute('width'));
     svg.setAttribute("height", this.getAttribute('height'));
     const polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
 
     let strCoordinats = ''
-    for (let i=0; i<Number(this.getAttribute('numberPoint')*2); i++){
-        strCoordinats = strCoordinats + this.randomInteger(0, this.getAttribute('width'))
-        if (i !== Number(this.getAttribute('numberPoint'))*2-1){
+    let cx = this.randomInteger(0, this.getAttribute('width'))
+    let cy = this.randomInteger(0, this.getAttribute('width'))
+    let radius = this.getAttribute('width')
+    let angle = 10
+
+    for (let i=0; i<Number(this.getAttribute('numberPoint')); i++){
+        //strCoordinats = strCoordinats + this.randomInteger(0, this.getAttribute('width'))
+        strCoordinats = strCoordinats + this.getCoordinate(cx, cy, radius, angle)
+        if (i !== Number(this.getAttribute('numberPoint'))-1){
             strCoordinats = strCoordinats + ','
+        }
+        angle += (2 * 3,14159 / this.getAttribute('numberPoint')) * (1 + this.randomInteger(-0.5, 0.5))
+        if (angle > 2 * 3,14159){
+          angle = angle - 2 * 3,14159
         }
     }
     polygon.setAttribute("points", strCoordinats); 
@@ -104,6 +115,13 @@ class MyFigura extends HTMLElement {
 
   randomInteger(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
+  }
+
+  getCoordinate(cx, cy, radius, angle){
+    let x = cx + radius * Math.cos(angle)
+    let y = cy + radius * Math.sin(angle)
+
+    return String(x) + ', ' + String(y)
   }
 
 }
