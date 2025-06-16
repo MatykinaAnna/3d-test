@@ -9,7 +9,12 @@
 
 <body>
 
-    <button onclick="addMyFigura()">Создать</button>
+    <div>
+        <button onclick="addMyFigura()">Создать</button>
+        <button onclick="saveFigura()">Сохранить</button>
+        <button onclick="delFigura()">Сбросить</button>
+    </div>
+    
 
     <div class="wrapper"></div>
 
@@ -18,35 +23,13 @@
     </div>
  
     <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="./scripts.js"></script>
     <script src="./src/shared/components/figura/figura.js"></script>
     <script src="./src/shared/components/coordinateField/coordinateField.js"></script>
 
     <script>
-        function addMyFigura(){
 
-            document.getElementsByClassName('wrapper')[0].innerHTML = ''
 
-            //const numFigures = Number(prompt('Введите колличество фигур от 1 до 10'))
-            const numFigures = 3
-            if (1<=(numFigures) && (numFigures)<=10){
-                let i=0
-                while (i<numFigures){
-                   let figura = new MyFigura()
-                    figura.setAttribute('width', "100")
-                    figura.setAttribute('height', "100")
-                    figura.setAttribute('numberPoint', "3")
-                    figura.setAttribute('color', "red")
-                    figura.setAttribute('_id', `svg-${i}`)
-                    figura.setAttribute('nameWrapper', 'wrapper')     
-                    
-                    i++ 
-
-                    document.body.append(figura)
-                }
-            } else {
-                confirm('Колличество фигур не соответсвует условию')
-            }
-        }
     </script>
 </body>
 

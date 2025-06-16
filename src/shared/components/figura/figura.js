@@ -56,41 +56,46 @@ class MyFigura extends HTMLElement {
   }
 
   connectedCallback() {
-    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    svg.setAttribute("width", this.getAttribute('width'));
-    svg.setAttribute("height", this.getAttribute('height'));
-    const polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
 
-    let strCoordinats = ''
-    let cx = this.randomInteger(0, this.getAttribute('width'))
-    let cy = this.randomInteger(0, this.getAttribute('width'))
-    let radius = this.getAttribute('width')
-    let angle = 10
-
-    for (let i=0; i<Number(this.getAttribute('numberPoint')); i++){
-        //strCoordinats = strCoordinats + this.randomInteger(0, this.getAttribute('width'))
-        strCoordinats = strCoordinats + this.getCoordinate(cx, cy, radius, angle)
-        if (i !== Number(this.getAttribute('numberPoint'))-1){
-            strCoordinats = strCoordinats + ','
-        }
-        angle += (2 * 3,14159 / this.getAttribute('numberPoint')) * (1 + this.randomInteger(-0.5, 0.5))
-        if (angle > 2 * 3,14159){
-          angle = angle - 2 * 3,14159
-        }
+    if (this.getAttribute('svg_html') == ''){
+      const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svg.setAttribute("width", this.getAttribute('width'));
+      svg.setAttribute("height", this.getAttribute('height'));
+      const polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+  
+      let strCoordinats = ''
+      let cx = this.randomInteger(0, this.getAttribute('width'))
+      let cy = this.randomInteger(0, this.getAttribute('width'))
+      let radius = this.getAttribute('width')
+      let angle = 30
+  
+      for (let i=0; i<Number(this.getAttribute('numberPoint')); i++){
+          //strCoordinats = strCoordinats + this.randomInteger(0, this.getAttribute('width'))
+          strCoordinats = strCoordinats + this.getCoordinate(cx, cy, radius, angle)
+          if (i !== Number(this.getAttribute('numberPoint'))-1){
+              strCoordinats = strCoordinats + ','
+          }
+          angle += (2 * 3,14159 / this.getAttribute('numberPoint')) * (1 + this.randomInteger(-0.5, 0.5))
+          if (angle > 2 * 3,14159){
+            angle = angle - 2 * 3,14159
+          }
+      }
+      polygon.setAttribute("points", strCoordinats); 
+      polygon.setAttribute("fill", this.getAttribute('color'));
+  
+      svg.appendChild(polygon);
+  
+      const div = document.createElement('div')
+      div.style.position = 'absolute'
+      div.style.width = `${this.getAttribute('width')}px`
+      div.style.height = `${this.getAttribute('height')}px`
+      div.setAttribute('id', this.getAttribute('_id'))
+      div.append(svg)
+  
+      document.getElementsByClassName(this.getAttribute('nameWrapper'))[0].appendChild(div)
+    } else {
+      document.getElementsByClassName(this.getAttribute('nameWrapper'))[0].insertAdjacentHTML('beforeend', this.getAttribute('svg_html'))
     }
-    polygon.setAttribute("points", strCoordinats); 
-    polygon.setAttribute("fill", this.getAttribute('color'));
-
-    svg.appendChild(polygon);
-
-    const div = document.createElement('div')
-    div.style.position = 'absolute'
-    div.style.width = `${this.getAttribute('width')}px`
-    div.style.height = `${this.getAttribute('height')}px`
-    div.setAttribute('id', this.getAttribute('_id'))
-    div.append(svg)
-
-    document.getElementsByClassName(this.getAttribute('nameWrapper'))[0].appendChild(div)
   }
 
   disconnectedCallback() {
