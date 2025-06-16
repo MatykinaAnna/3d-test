@@ -37,15 +37,17 @@ class CoordinateField extends HTMLElement {
         
     // функция интерполяции значений на ось Х  
     var scaleX = d3.scaleLinear()
-                .domain([0, 100])
+                .domain([0, 400])
                 .range([0, xAxisLength]);
     var scaleY = d3.scaleLinear()
                 .domain([100, 0])
                 .range([0, yAxisLength]);
                 
     // создаем ось X   
-    var xAxis = d3.axisBottom(scaleX);    
-    var yAxis = d3.axisLeft(scaleY);
+    var xAxis = d3.axisBottom(scaleX)
+                .ticks(40);    
+    var yAxis = d3.axisLeft(scaleY)
+                .ticks(10); 
                 
     // отрисовка оси               
     svg.append("g")       
@@ -111,13 +113,15 @@ class CoordinateField extends HTMLElement {
     let yAxisLength = height1 - 2 * margin;
 
     let scaleX = d3.scaleLinear()
-        .domain([0, 100*k])
+        .domain([0, 400/k])
         .range([0, xAxisLength]);
     let scaleY = d3.scaleLinear()
-        .domain([100*k, 0])
+        .domain([100/k, 0])
         .range([0, yAxisLength]);
-    let xAxis = d3.axisBottom(scaleX);
-    let yAxis = d3.axisLeft(scaleY);
+    let xAxis = d3.axisBottom(scaleX)
+                .ticks(40);
+    let yAxis = d3.axisLeft(scaleY)
+                .ticks(10);
 
     // отрисовка оси               
     svg.append("g")       
