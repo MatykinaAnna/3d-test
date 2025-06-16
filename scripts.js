@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", ()=>{
     if (localStorage.getItem('figura') != null){
         let array = JSON.parse(localStorage.getItem('figura'))
@@ -14,6 +15,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
         })
     }
 });
+
 
 function delFigura(){
     localStorage.clear('figura')
@@ -32,7 +34,7 @@ function addMyFigura(){
 
     document.getElementsByClassName('wrapper')[0].innerHTML = ''
 
-    const numFigures = 10
+    const numFigures = Math.floor(Math.random() * (10 - 5) + 5);
     localStorage.setItem('numFigures', numFigures);
     if (1<=(numFigures) && (numFigures)<=10){
         let i=0
